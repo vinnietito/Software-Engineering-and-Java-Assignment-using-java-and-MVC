@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Book Store Login</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="./favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="./favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="./favicons/favicon-16x16.png">
+    <link rel="manifest" href="./favicons/site.webmanifest">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            background-color: #f7f2e8; /* Light background */
+            font-family: 'Georgia', serif; /* Vintage font */
+            color: #4b3d28; /* Dark brown for text */
+        }
+        header {
+            background-color: #8c7351; /* Darker vintage color */
+            padding: 15px 0;
+        }
+        .navbar-brand img {
+            height: 40px; /* Adjust logo height */
+        }
+        #topmid {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .form-container {
+            background-color: #fff; /* White background for form */
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Soft shadow */
+            margin: 20px auto;
+            width: 40%;
+        }
+        input, textarea {
+            border-radius: 8px;
+            border: 1px solid #bda98c; /* Soft border */
+            padding: 10px;
+            margin-bottom: 15px;
+            width: calc(100% - 22px); /* Adjust width for padding */
+        }
+        label {
+            font-weight: bold; /* Bold labels for emphasis */
+            display: block; /* Labels on separate lines */
+            margin-bottom: 5px;
+        }
+        .btn-success {
+            background-color: #6ca36c; /* Vintage green */
+            border-color: #5c945c; /* Darker green for border */
+        }
+        .btn-success:hover {
+            background-color: #5c945c; /* Darken button on hover */
+        }
+        .capbox {
+            background: linear-gradient(to right, #ccc2a7, #8f8874);
+            border: #5c574b 2px solid;
+            border-radius: 8px;
+            padding: 5px 8px;
+            margin-bottom: 15px;
+        }
+        #CaptchaDiv {
+            font: normal 25px Impact, Charcoal, arial, sans-serif;
+            font-style: italic;
+            text-align: center;
+            background-color: #FFFFFF;
+            user-select: none;
+            padding: 3px 14px;
+            margin-right: 4px;
+            border-radius: 4px;
+        }
+        #CaptchaInput {
+            border: black 2px solid;
+            margin: 3px 0px 1px 0px;
+        }
+        @media (max-width: 768px) {
+            .form-container {
+                width: 90%; /* Responsive width on smaller screens */
+            }
+        }
+    </style>
+</head>
+<body onload="funload()">
+    <header>
+        <nav class="navbar navbar-expand-sm">
+            <a class="navbar-brand">
+                <img src="logo.png" alt="EBook Store Logo">
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item active"><a class="nav-link" href="login.html">Login</a></li>
+                    <li class="nav-item"><a class="nav-link" href="CustomerRegister.html">Register</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <div id="topmid">
+        <h1>Welcome to EBook Store</h1>
+    </div>
+
+    <div class="form-container">
+        <form action="userlog" method="post" onsubmit="checkform()" id="theform">
+            <h2 class="text-center" style="color: #8c7351;">Customer LOGIN</h2>
+            <div>
+                <a href="SellerLogin.html" style="color: blue; font-size: medium;">Are you a Seller? Click Here to Login as Admin</a>
+            </div>
+            <label for="userName">Username:</label>
+            <input type="text" name="username" id="userName" placeholder="Enter your Username" required>
+            <label for="Password">Password:</label>
+            <input type="password" name="password" placeholder="Enter Password" id="Password" required>
+            <div class="capbox">
+                <div id="CaptchaDiv">46749</div>
+                <div>
+                    <input type="hidden" id="txtCaptcha" value="46749">
+                    <input type="text" name="CaptchaInput" id="CaptchaInput" size="15" placeholder="Enter Captcha" required>
+                </div>
+            </div>
+            <input class="btn btn-success" type="submit" value="Login as a User">
+        </form>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.2.1/dist/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+        // Preloader script
+        function funload() {
+            var loading = document.getElementById("loading");
+            if (loading) {
+                loading.style.display = "none";
+            }
+        }
+
+        // Captcha Script
+        function checkform() {
+            var theform = document.getElementById("theform");
+            var why = "";
+
+            if (theform.CaptchaInput.value === "") {
+                why += "- Please Enter CAPTCHA Code.\n";
+            }
+            if (theform.CaptchaInput.value !== "" && ValidCaptcha(theform.CaptchaInput.value) === false) {
+                why += "- The CAPTCHA Code Does Not Match.\n";
+            }
+            if (why !== "") {
+                alert(why);
+                event.preventDefault();
+                return false;
+            }
+            return true;
+        }
+
+        // Generate random CAPTCHA
+        var a = Math.ceil(Math.random() * 9) + '';
+        var b = Math.ceil(Math.random() * 9) + '';
+        var c = Math.ceil(Math.random() * 9) + '';
+        var d = Math.ceil(Math.random() * 9) + '';
+        var e = Math.ceil(Math.random() * 9) + '';
+        var code = a + b + c + d + e;
+
+        document.getElementById("txtCaptcha").value = code;
+        document.getElementById("CaptchaDiv").innerHTML = code;
+
+        // Validate input against the generated number
+        function ValidCaptcha() {
+            var str1 = removeSpaces(document.getElementById('txtCaptcha').value);
+            var str2 = removeSpaces(document.getElementById('CaptchaInput').value);
+            return str1 === str2;
+        }
+
+        // Remove spaces from the entered and generated code
+        function removeSpaces(string) {
+            return string.split(' ').join('');
+        }
+    </script>
+</body>
+</html>
